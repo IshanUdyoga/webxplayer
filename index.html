@@ -134,25 +134,90 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
+        <div class="settings-tabs">
+            <button class="tab-btn active" data-tab="video">Video</button>
+            <button class="tab-btn" data-tab="subtitles">Subtitles</button>
+            <!-- Additional tabs can be added here in the future -->
+        </div>
         <div class="settings-content">
-            <div class="settings-section">
-                <h4>Video Quality</h4>
-                <div class="quality-options">
-                    <div class="quality-option selected" data-quality="auto">Auto</div>
-                    <div class="quality-option" data-quality="1080p">1080p</div>
-                    <div class="quality-option" data-quality="720p">720p</div>
-                    <div class="quality-option" data-quality="480p">480p</div>
-                    <div class="quality-option" data-quality="360p">360p</div>
+            <!-- Video Settings Tab -->
+            <div class="settings-tab-content active" id="video-tab">
+                <div class="settings-section">
+                    <h4>Video Quality</h4>
+                    <div class="quality-options">
+                        <div class="quality-option selected" data-quality="auto">Auto</div>
+                        <div class="quality-option" data-quality="1080p">1080p</div>
+                        <div class="quality-option" data-quality="720p">720p</div>
+                        <div class="quality-option" data-quality="480p">480p</div>
+                        <div class="quality-option" data-quality="360p">360p</div>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h4>Theme</h4>
+                    <div class="theme-options">
+                        <div class="theme-option selected" data-theme="dark">Dark</div>
+                        <div class="theme-option" data-theme="light">Light</div>
+                    </div>
                 </div>
             </div>
-            <div class="settings-section">
-                <h4>Theme</h4>
-                <div class="theme-options">
-                    <div class="theme-option selected" data-theme="dark">Dark</div>
-                    <div class="theme-option" data-theme="light">Light</div>
+            
+            <!-- Subtitles Settings Tab -->
+            <div class="settings-tab-content" id="subtitles-tab">
+                <div class="settings-section">
+                    <h4>Subtitle Display</h4>
+                    <div class="subtitle-toggle-container">
+                        <label class="switch">
+                            <input type="checkbox" id="subtitle-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <span>Show Subtitles</span>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h4>Subtitle Delay</h4>
+                    <div class="subtitle-delay-container">
+                        <button class="subtitle-delay-btn" id="subtitle-delay-minus">-</button>
+                        <input type="number" id="subtitle-delay-value" value="0" step="0.1">
+                        <span>seconds</span>
+                        <button class="subtitle-delay-btn" id="subtitle-delay-plus">+</button>
+                        <button class="subtitle-delay-reset" id="subtitle-delay-reset">Reset</button>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h4>Font Size</h4>
+                    <div class="range-with-value">
+                        <input type="range" id="subtitle-size" min="0.5" max="2" step="0.1" value="1">
+                        <span id="subtitle-size-value">100%</span>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h4>Background Opacity</h4>
+                    <div class="range-with-value">
+                        <input type="range" id="subtitle-bg-opacity" min="0" max="1" step="0.1" value="0.6">
+                        <span id="subtitle-bg-opacity-value">60%</span>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h4>Font Color</h4>
+                    <div class="color-options">
+                        <div class="color-option selected" data-color="#ffffff" style="background-color: #ffffff;"></div>
+                        <div class="color-option" data-color="#ffff00" style="background-color: #ffff00;"></div>
+                        <div class="color-option" data-color="#00ffff" style="background-color: #00ffff;"></div>
+                        <div class="color-option" data-color="#ff9900" style="background-color: #ff9900;"></div>
+                        <div class="color-option" data-color="#00ff00" style="background-color: #00ff00;"></div>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h4>Position</h4>
+                    <div class="position-options">
+                        <div class="position-option" data-position="top">Top</div>
+                        <div class="position-option selected" data-position="bottom">Bottom</div>
+                    </div>
                 </div>
             </div>
-            <div class="settings-section">
+            
+            <!-- Keyboard Shortcuts Section (Common to all tabs) -->
+            <div class="settings-section keyboard-shortcuts-section">
                 <h4>Keyboard Shortcuts</h4>
                 <div class="shortcuts-list">
                     <div class="shortcut-item">

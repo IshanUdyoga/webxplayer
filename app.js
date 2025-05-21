@@ -52,13 +52,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let urlHistory = [];
     const MAX_URL_HISTORY = 5;
 
+    // Subtitle settings
+    let subtitleSettings = {
+        enabled: true,
+        delay: 0,
+        fontSize: 1.0,
+        bgOpacity: 0.6,
+        color: '#ffffff',
+        position: 'bottom'
+    };
+
     // Initialize player
     function initPlayer() {
         updateTheme();
         setupEventListeners();
         loadPlaylistFromLocalStorage();
         loadUrlHistoryFromLocalStorage();
+        loadSubtitleSettingsFromLocalStorage();
         initializeFloatingControls();
+        applySubtitleSettings();
     }
 
     // Setup event listeners
@@ -139,6 +151,140 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isPlaying) {
                 startHideControlsTimer();
             }
+        });
+
+        // Settings tabs
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.settings-tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Add active class to clicked button and corresponding content
+                button.classList.add('active');
+                const tabName = button.dataset.tab;
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+            });
+        });
+
+        // Subtitle settings
+        const subtitleToggle = document.getElementById('subtitle-toggle');
+        subtitleToggle.checked = subtitleSettings.enabled;
+        subtitleToggle.addEventListener('change', () => {
+            subtitleSettings.enabled = subtitleToggle.checked;
+            subtitleContainer.style.display = subtitleSettings.enabled ? 'block' : 'none';
+            saveSubtitleSettingsToLocalStorage();
+            showToast(subtitleSettings.enabled ? "Subtitles enabled" : "Subtitles disabled");
+        });
+
+        // Subtitle delay control
+        const subtitleDelayValue = document.getElementById('subtitle-delay-value');
+        const subtitleDelayMinus = document.getElementById('subtitle-delay-minus');
+        const subtitleDelayPlus = document.getElementById('subtitle-delay-plus');
+        const subtitleDelayReset = document.getElementById('subtitle-delay-reset');
+        
+        subtitleDelayValue.value = subtitleSettings.delay;
+        
+        subtitleDelayValue.addEventListener('change', () => {
+            subtitleSettings.delay = parseFloat(subtitleDelayValue.value);
+            saveSubtitleSettingsToLocalStorage();
+            showToast(`Subtitle delay: ${subtitleSettings.delay}s`);
+        });
+        
+        subtitleDelayMinus.addEventListener('click', () => {
+            subtitleSettings.delay = Math.max(parseFloat(subtitleDelayValue.value) - 0.1, -10).toFixed(1);
+            subtitleDelayValue.value = subtitleSettings.delay;
+            saveSubtitleSettingsToLocalStorage();
+            showToast(`Subtitle delay: ${subtitleSettings.delay}s`);
+        });
+        
+        subtitleDelayPlus.addEventListener('click', () => {
+            subtitleSettings.delay = Math.min(parseFloat(subtitleDelayValue.value) + 0.1, 10).toFixed(1);
+            subtitleDelayValue.value = subtitleSettings.delay;
+            saveSubtitleSettingsToLocalStorage();
+            showToast(`Subtitle delay: ${subtitleSettings.delay}s`);
+        });
+        
+        subtitleDelayReset.addEventListener('click', () => {
+            subtitleSettings.delay = 0;
+            subtitleDelayValue.value = subtitleSettings.delay;
+            saveSubtitleSettingsToLocalStorage();
+            showToast("Subtitle delay reset");
+        });
+
+        // Font size control
+        const subtitleSize = document.getElementById('subtitle-size');
+        const subtitleSizeValue = document.getElementById('subtitle-size-value');
+        
+        subtitleSize.value = subtitleSettings.fontSize;
+        subtitleSizeValue.textContent = `${Math.round(subtitleSettings.fontSize * 100)}%`;
+        
+        subtitleSize.addEventListener('input', () => {
+            subtitleSettings.fontSize = parseFloat(subtitleSize.value);
+            subtitleSizeValue.textContent = `${Math.round(subtitleSettings.fontSize * 100)}%`;
+            applySubtitleSettings();
+        });
+        
+        subtitleSize.addEventListener('change', () => {
+            saveSubtitleSettingsToLocalStorage();
+            showToast(`Subtitle size: ${Math.round(subtitleSettings.fontSize * 100)}%`);
+        });
+
+        // Background opacity control
+        const subtitleBgOpacity = document.getElementById('subtitle-bg-opacity');
+        const subtitleBgOpacityValue = document.getElementById('subtitle-bg-opacity-value');
+        
+        subtitleBgOpacity.value = subtitleSettings.bgOpacity;
+        subtitleBgOpacityValue.textContent = `${Math.round(subtitleSettings.bgOpacity * 100)}%`;
+        
+        subtitleBgOpacity.addEventListener('input', () => {
+            subtitleSettings.bgOpacity = parseFloat(subtitleBgOpacity.value);
+            subtitleBgOpacityValue.textContent = `${Math.round(subtitleSettings.bgOpacity * 100)}%`;
+            applySubtitleSettings();
+        });
+        
+        subtitleBgOpacity.addEventListener('change', () => {
+            saveSubtitleSettingsToLocalStorage();
+            showToast(`Subtitle background: ${Math.round(subtitleSettings.bgOpacity * 100)}%`);
+        });
+
+        // Font color options
+        const colorOptions = document.querySelectorAll('.color-option');
+        
+        colorOptions.forEach(option => {
+            if (option.dataset.color === subtitleSettings.color) {
+                option.classList.add('selected');
+            }
+            
+            option.addEventListener('click', () => {
+                colorOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                subtitleSettings.color = option.dataset.color;
+                applySubtitleSettings();
+                saveSubtitleSettingsToLocalStorage();
+                showToast("Subtitle color changed");
+            });
+        });
+
+        // Position options
+        const positionOptions = document.querySelectorAll('.position-option');
+        
+        positionOptions.forEach(option => {
+            if (option.dataset.position === subtitleSettings.position) {
+                option.classList.add('selected');
+            }
+            
+            option.addEventListener('click', () => {
+                positionOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                subtitleSettings.position = option.dataset.position;
+                applySubtitleSettings();
+                saveSubtitleSettingsToLocalStorage();
+                showToast(`Subtitle position: ${subtitleSettings.position}`);
+            });
         });
     }
 
@@ -569,14 +715,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Subtitle functions
     function toggleSubtitles() {
-        const subtitleStyle = subtitleContainer.style;
-        if (subtitleStyle.display === 'none') {
-            subtitleStyle.display = 'block';
-            showToast("Subtitles enabled");
-        } else {
-            subtitleStyle.display = 'none';
-            showToast("Subtitles disabled");
+        subtitleSettings.enabled = !subtitleSettings.enabled;
+        subtitleContainer.style.display = subtitleSettings.enabled ? 'block' : 'none';
+        
+        // Update the checkbox in settings panel to match
+        const subtitleToggle = document.getElementById('subtitle-toggle');
+        if (subtitleToggle) {
+            subtitleToggle.checked = subtitleSettings.enabled;
         }
+        
+        saveSubtitleSettingsToLocalStorage();
+        showToast(subtitleSettings.enabled ? "Subtitles enabled" : "Subtitles disabled");
     }
 
     function loadSubtitles(event) {
@@ -596,7 +745,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 subtitles = parseVTT(content);
             }
             
-            subtitleContainer.style.display = 'block';
+            // Apply settings and show subtitles
+            subtitleSettings.enabled = true;
+            applySubtitleSettings();
+            
+            // Update UI elements
+            const subtitleToggle = document.getElementById('subtitle-toggle');
+            if (subtitleToggle) {
+                subtitleToggle.checked = true;
+            }
+            
+            saveSubtitleSettingsToLocalStorage();
             showToast(`Loaded subtitles from "${file.name}"`);
         };
         reader.readAsText(file);
@@ -642,21 +801,131 @@ document.addEventListener('DOMContentLoaded', () => {
         return hours * 3600 + minutes * 60 + seconds + (milliseconds ? parseFloat(`0.${milliseconds}`) : 0);
     }
 
+    // Update subtitle display with delay applied
     function updateSubtitleDisplay(currentTime) {
         let currentSubtitle = null;
+        const adjustedTime = currentTime - subtitleSettings.delay;
         
         for (const subtitle of subtitles) {
-            if (currentTime >= subtitle.start && currentTime <= subtitle.end) {
+            if (adjustedTime >= subtitle.start && adjustedTime <= subtitle.end) {
                 currentSubtitle = subtitle;
                 break;
             }
         }
         
-        if (currentSubtitle) {
+        if (currentSubtitle && subtitleSettings.enabled) {
             subtitleContainer.innerHTML = `<p>${currentSubtitle.text}</p>`;
+            subtitleContainer.style.display = 'block';
         } else {
             subtitleContainer.innerHTML = '';
         }
+    }
+
+    // Apply all subtitle settings to the DOM
+    function applySubtitleSettings() {
+        // Apply font size
+        subtitleContainer.style.fontSize = `${Math.max(0.8, subtitleSettings.fontSize)}rem`;
+        
+        // Apply background opacity and font color to any existing or future subtitles
+        const subtitleStyle = document.createElement('style');
+        subtitleStyle.id = 'subtitle-custom-style';
+        
+        // Remove any existing custom style
+        const existingStyle = document.getElementById('subtitle-custom-style');
+        if (existingStyle) {
+            existingStyle.remove();
+        }
+        
+        subtitleStyle.textContent = `
+            #subtitle-container p {
+                background-color: rgba(0, 0, 0, ${subtitleSettings.bgOpacity});
+                color: ${subtitleSettings.color};
+            }
+        `;
+        
+        document.head.appendChild(subtitleStyle);
+        
+        // Apply position
+        if (subtitleSettings.position === 'top') {
+            subtitleContainer.style.bottom = 'auto';
+            subtitleContainer.style.top = '70px';
+        } else {
+            subtitleContainer.style.top = 'auto';
+            subtitleContainer.style.bottom = '70px';
+        }
+        
+        // Apply visibility
+        subtitleContainer.style.display = subtitleSettings.enabled ? 'block' : 'none';
+    }
+
+    // Save subtitle settings to localStorage
+    function saveSubtitleSettingsToLocalStorage() {
+        try {
+            localStorage.setItem('webXPlayerSubtitleSettings', JSON.stringify(subtitleSettings));
+        } catch (error) {
+            console.error('Error saving subtitle settings to local storage:', error);
+        }
+    }
+
+    // Load subtitle settings from localStorage
+    function loadSubtitleSettingsFromLocalStorage() {
+        try {
+            const storedSettings = localStorage.getItem('webXPlayerSubtitleSettings');
+            if (storedSettings) {
+                subtitleSettings = {...subtitleSettings, ...JSON.parse(storedSettings)};
+            }
+        } catch (error) {
+            console.error('Error loading subtitle settings from local storage:', error);
+        }
+    }
+
+    // Modified toggleSubtitles function to work with new settings
+    function toggleSubtitles() {
+        subtitleSettings.enabled = !subtitleSettings.enabled;
+        subtitleContainer.style.display = subtitleSettings.enabled ? 'block' : 'none';
+        
+        // Update the checkbox in settings panel to match
+        const subtitleToggle = document.getElementById('subtitle-toggle');
+        if (subtitleToggle) {
+            subtitleToggle.checked = subtitleSettings.enabled;
+        }
+        
+        saveSubtitleSettingsToLocalStorage();
+        showToast(subtitleSettings.enabled ? "Subtitles enabled" : "Subtitles disabled");
+    }
+
+    // Modified loadSubtitles function to apply settings after loading
+    function loadSubtitles(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const content = e.target.result;
+            
+            // Check if it's an SRT file
+            if (file.name.endsWith('.srt')) {
+                subtitles = parseSRT(content);
+            } 
+            // Check if it's a WebVTT file
+            else if (file.name.endsWith('.vtt')) {
+                subtitles = parseVTT(content);
+            }
+            
+            // Apply settings and show subtitles
+            subtitleSettings.enabled = true;
+            applySubtitleSettings();
+            
+            // Update UI elements
+            const subtitleToggle = document.getElementById('subtitle-toggle');
+            if (subtitleToggle) {
+                subtitleToggle.checked = true;
+            }
+            
+            saveSubtitleSettingsToLocalStorage();
+            showToast(`Loaded subtitles from "${file.name}"`);
+        };
+        reader.readAsText(file);
     }
 
     // Playlist functions

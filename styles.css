@@ -626,6 +626,225 @@ body {
     display: none;
 }
 
+/* Settings panel with tabs */
+.settings-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--bg-tertiary);
+    padding: 0 15px;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 10px 15px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: var(--transition);
+}
+
+.tab-btn.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.settings-tab-content {
+    display: none;
+}
+
+.settings-tab-content.active {
+    display: block;
+}
+
+/* Subtitle settings specific styles */
+.subtitle-toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-tertiary);
+    transition: var(--transition);
+}
+
+.slider.round {
+    border-radius: 20px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--text-secondary);
+    transition: var(--transition);
+}
+
+input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+    background-color: white;
+}
+
+.subtitle-delay-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.subtitle-delay-btn {
+    width: 30px;
+    height: 30px;
+    background-color: var(--bg-tertiary);
+    border: none;
+    border-radius: 4px;
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: var(--transition);
+}
+
+.subtitle-delay-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#subtitle-delay-value {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid var(--bg-tertiary);
+    background-color: var(--bg-tertiary);
+    color: var(--text-color);
+    border-radius: 4px;
+    text-align: center;
+}
+
+.subtitle-delay-reset {
+    background-color: var(--bg-tertiary);
+    border: none;
+    border-radius: 4px;
+    color: var(--text-color);
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.subtitle-delay-reset:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.range-with-value {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.range-with-value input[type="range"] {
+    flex-grow: 1;
+    -webkit-appearance: none;
+    height: 5px;
+    background: var(--bg-tertiary);
+    border-radius: 2.5px;
+    outline: none;
+}
+
+.range-with-value input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+}
+
+.range-with-value span {
+    width: 50px;
+    text-align: right;
+}
+
+.color-options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.color-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: var(--transition);
+}
+
+.color-option.selected {
+    border-color: var(--primary-color);
+}
+
+.position-options {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.position-option {
+    padding: 6px 12px;
+    background-color: var(--bg-tertiary);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.position-option:hover, .position-option.selected {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Keep keyboard shortcuts at bottom of settings */
+.keyboard-shortcuts-section {
+    margin-top: 20px;
+    border-top: 1px solid var(--bg-tertiary);
+    padding-top: 20px;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .app-container {
