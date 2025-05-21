@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setupEventListeners();
         loadPlaylistFromLocalStorage();
         loadUrlHistoryFromLocalStorage();
+        initializeFloatingControls();
     }
 
     // Setup event listeners
@@ -130,7 +131,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Hide controls when mouse is inactive
         videoContainer.addEventListener('mousemove', showControls);
-        videoContainer.addEventListener('mouseleave', startHideControlsTimer);
+        videoContainer.addEventListener('mouseleave', hideControls);
+        document.querySelector('.controls-container').addEventListener('mouseenter', () => {
+            clearTimeout(hideControlsTimeout);
+        });
+        document.querySelector('.controls-container').addEventListener('mouseleave', () => {
+            if (isPlaying) {
+                startHideControlsTimer();
+            }
+        });
+    }
+
+    // Initialize floating controls behavior
+    function initializeFloatingControls() {
+        const controlsContainer = document.querySelector('.controls-container');
+        controlsContainer.style.opacity = '0';
+        
+        // Show controls initially when video is loaded
+        videoPlayer.addEventListener('loadeddata', () => {
+            showControls();
+            setTimeout(() => {
+                if (isPlaying) {
+                    controlsContainer.style.opacity = '0';
+                }
+            }, 3000);
+        });
+        
+        // Show controls on pause
+        videoPlayer.addEventListener('pause', () => {
+            controlsContainer.style.opacity = '1';
+            clearTimeout(hideControlsTimeout);
+        });
+        
+        // Hide controls when playing if mouse is inactive
+        videoPlayer.addEventListener('play', () => {
+            startHideControlsTimer();
+        });
     }
 
     // URL streaming functions
@@ -309,6 +345,8 @@ document.addEventListener('DOMContentLoaded', () => {
             playMedia();
         } else {
             pauseMedia();
+            showControls(); // Make sure controls are visible when paused
+            clearTimeout(hideControlsTimeout); // Don't hide controls when paused
         }
     }
 
@@ -408,6 +446,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Settings function
     function toggleSettings() {
         settingsPanel.classList.toggle('show');
+        if (settingsPanel.classList.contains('show')) {
+            showControls();
+            clearTimeout(hideControlsTimeout);
+        } else if (isPlaying) {
+            startHideControlsTimer();
+        }
     }
 
     // Playback speed functions
@@ -496,14 +540,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Show/hide controls
     function showControls() {
-        document.querySelector('.controls-container').style.opacity = '1';
+        const controlsContainer = document.querySelector('.controls-container');
+        controlsContainer.style.opacity = '1';
+        
         clearTimeout(hideControlsTimeout);
-        startHideControlsTimer();
+        
+        if (isPlaying) {
+            startHideControlsTimer();
+        }
+    }
+
+    function hideControls() {
+        clearTimeout(hideControlsTimeout);
+        
+        if (isPlaying) {
+            document.querySelector('.controls-container').style.opacity = '0';
+        }
     }
 
     function startHideControlsTimer() {
+        clearTimeout(hideControlsTimeout);
         hideControlsTimeout = setTimeout(() => {
-            if (isPlaying) {
+            if (isPlaying && !settingsPanel.classList.contains('show')) {
                 document.querySelector('.controls-container').style.opacity = '0';
             }
         }, 3000);
