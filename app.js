@@ -601,27 +601,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fullscreen function
     function toggleFullscreen() {
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
         if (!isFullscreen) {
-            if (videoContainer.requestFullscreen) {
-                videoContainer.requestFullscreen();
-            } else if (videoContainer.webkitRequestFullscreen) {
-                videoContainer.webkitRequestFullscreen();
-            } else if (videoContainer.msRequestFullscreen) {
-                videoContainer.msRequestFullscreen();
+            // On mobile, request fullscreen on the video element itself
+            const elementToFullscreen = isMobile ? videoPlayer : videoContainer;
+            
+            if (elementToFullscreen.requestFullscreen) {
+                elementToFullscreen.requestFullscreen();
+            } else if (elementToFullscreen.webkitRequestFullscreen) {
+                elementToFullscreen.webkitRequestFullscreen();
+            } else if (elementToFullscreen.webkitEnterFullscreen) {
+                // iOS Safari specific
+                elementToFullscreen.webkitEnterFullscreen();
+            } else if (elementToFullscreen.msRequestFullscreen) {
+                elementToFullscreen.msRequestFullscreen();
             }
+            
             fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
             isFullscreen = true;
+            
+            // On mobile, try to lock orientation to landscape
+            if (isMobile && screen.orientation && screen.orientation.lock) {
+                try {
+                    screen.orientation.lock('landscape').catch(() => {
+                        // Orientation lock failed, but that's okay
+                    });
+                } catch (e) {
+                    // Orientation lock not supported
+                }
+            }
         } else {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
             } else if (document.webkitExitFullscreen) {
                 document.webkitExitFullscreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
             } else if (document.msExitFullscreen) {
                 document.msExitFullscreen();
             }
+            
             fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
             isFullscreen = false;
         }
+        
         showToast(isFullscreen ? "Entered fullscreen" : "Exited fullscreen");
     }
 

@@ -1260,3 +1260,49 @@ input:checked + .slider:before {
         height: 22px;
     }
 }
+
+/* Enhanced fullscreen support for mobile */
+video:fullscreen,
+video:-webkit-full-screen,
+video:-moz-full-screen,
+video:-ms-fullscreen {
+    width: 100vw !important;
+    height: 100vh !important;
+    object-fit: contain;
+    background: black;
+}
+
+.video-container:fullscreen,
+.video-container:-webkit-full-screen,
+.video-container:-moz-full-screen,
+.video-container:-ms-fullscreen {
+    width: 100vw !important;
+    height: 100vh !important;
+    background: black;
+}
+
+/* Mobile fullscreen adjustments */
+@media (max-width: 768px) {
+    video:fullscreen,
+    video:-webkit-full-screen {
+        width: 100vw !important;
+        height: 100vh !important;
+        object-fit: contain;
+    }
+    
+    /* Hide controls in mobile fullscreen */
+    video:fullscreen + .video-overlay,
+    video:-webkit-full-screen + .video-overlay {
+        display: none;
+    }
+    
+    /* Ensure controls are positioned correctly in mobile fullscreen */
+    .video-container:fullscreen .controls-container,
+    .video-container:-webkit-full-screen .controls-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 2147483647;
+    }
+}
