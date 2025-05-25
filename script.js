@@ -13,6 +13,146 @@ document.addEventListener('DOMContentLoaded', function() {
     const progressFill = document.querySelector('.progress-fill');
     const currentTimeElement = document.getElementById('current-time');
     const durationElement = document.getElementById('duration');
+    const videoContainer = document.getElementById('video-container');
+    const controlsContainer = document.querySelector('.controls-container');
+
+    // Mobile and touch detection
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isTablet = /iPad|Android/i.test(navigator.userAgent) && window.innerWidth >= 768;
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    // Touch and gesture handling variables
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
+    let lastTap = 0;
+    let controlsTimeout;
+    let isControlsVisible = isMobile;
+
+    // Initialize mobile-specific behaviors
+    if (isMobile || isTouchDevice) {
+        initializeMobileControls();
+    }
+
+    function initializeMobileControls() {
+        // Show controls by default on mobile
+        if (isMobile) {
+            controlsContainer.style.opacity = '1';
+            isControlsVisible = true;
+        }
+        
+        // Add touch event listeners
+        videoContainer.addEventListener('touchstart', handleTouchStart, { passive: false });
+        videoContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
+        videoContainer.addEventListener('touchend', handleTouchEnd, { passive: false });
+        
+        // Handle double tap for fullscreen on mobile
+        videoContainer.addEventListener('touchend', handleDoubleTap);
+        
+        // Prevent context menu on long press
+        videoContainer.addEventListener('contextmenu', (e) => e.preventDefault());
+        
+        // Auto-hide controls on mobile after inactivity
+        if (!isMobile) {
+            setupControlsAutoHide();
+        }
+    }
+    
+    function handleTouchStart(e) {
+        if (e.touches.length === 1) {
+            const touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+            touchStartTime = Date.now();
+        }
+    }
+    
+    function handleTouchMove(e) {
+        if (e.touches.length === 1) {
+            const touch = e.touches[0];
+            const deltaX = touch.clientX - touchStartX;
+            const deltaY = touch.clientY - touchStartY;
+            
+            // Prevent scrolling when swiping on video
+            if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
+                e.preventDefault();
+            }
+        }
+    }
+    
+    function handleTouchEnd(e) {
+        if (!touchStartTime) return;
+        
+        const touchEndTime = Date.now();
+        const touchDuration = touchEndTime - touchStartTime;
+        
+        // Single tap to toggle controls (only on non-mobile or when controls are hidden)
+        if (touchDuration < 300 && (!isMobile || !isControlsVisible)) {
+            toggleControls();
+        }
+        
+        touchStartTime = 0;
+    }
+    
+    function handleDoubleTap(e) {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTap;
+        
+        if (tapLength < 500 && tapLength > 0) {
+            // Double tap detected
+            e.preventDefault();
+            toggleFullscreen();
+        }
+        lastTap = currentTime;
+    }
+    
+    function toggleControls() {
+        if (isMobile) return; // Controls always visible on mobile
+        
+        isControlsVisible = !isControlsVisible;
+        controlsContainer.style.opacity = isControlsVisible ? '1' : '0';
+        
+        if (isControlsVisible) {
+            setupControlsAutoHide();
+        }
+    }
+    
+    function setupControlsAutoHide() {
+        clearTimeout(controlsTimeout);
+        controlsTimeout = setTimeout(() => {
+            if (!isMobile && !videoPlayer.paused) {
+                isControlsVisible = false;
+                controlsContainer.style.opacity = '0';
+            }
+        }, 3000);
+    }
+    
+    function toggleFullscreen() {
+        if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+            // Exit fullscreen
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        } else {
+            // Enter fullscreen
+            const element = videoContainer;
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            }
+        }
+    }
 
     // Format support libraries
     let hlsPlayer = null;
@@ -143,12 +283,129 @@ document.addEventListener('DOMContentLoaded', function() {
         return URL.createObjectURL(fileObj);
     }
 
+    // Enhanced progress bar for touch devices
+    function enhanceProgressBarForTouch() {
+        const progressContainer = document.querySelector('.progress-container');
+        const seekSlider = document.querySelector('.seek-slider');
+        
+        if (isTouchDevice) {
+            // Make progress bar larger on touch devices
+            progressContainer.style.height = '25px';
+            seekSlider.style.height = '25px';
+            
+            // Add touch event listeners for better seeking
+            let isDragging = false;
+            
+            progressContainer.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                updateSeekPosition(e.touches[0]);
+                e.preventDefault();
+            });
+            
+            progressContainer.addEventListener('touchmove', (e) => {
+                if (isDragging) {
+                    updateSeekPosition(e.touches[0]);
+                    e.preventDefault();
+                }
+            });
+            
+            progressContainer.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+            
+            function updateSeekPosition(touch) {
+                const rect = progressContainer.getBoundingClientRect();
+                const pos = (touch.clientX - rect.left) / rect.width;
+                const time = pos * videoPlayer.duration;
+                
+                if (time >= 0 && time <= videoPlayer.duration) {
+                    videoPlayer.currentTime = time;
+                }
+            }
+        }
+    }
+    
+    // Enhanced volume control for mobile
+    function enhanceVolumeControlForMobile() {
+        if (isMobile) {
+            // Hide volume control on mobile (use hardware buttons)
+            const volumeControl = document.querySelector('.volume-control');
+            if (volumeControl) {
+                volumeControl.style.display = 'none';
+            }
+        }
+    }
+    
+    // Keyboard shortcuts (only for non-touch devices or tablets)
+    function setupKeyboardShortcuts() {
+        if (!isMobile || isTablet) {
+            document.addEventListener('keydown', function(e) {
+                // Prevent shortcuts when typing in inputs
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                    return;
+                }
+                
+                switch(e.code) {
+                    case 'Space':
+                        e.preventDefault();
+                        togglePlayPause();
+                        break;
+                    case 'KeyF':
+                        e.preventDefault();
+                        toggleFullscreen();
+                        break;
+                    case 'KeyM':
+                        e.preventDefault();
+                        toggleMute();
+                        break;
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        skipTime(-10);
+                        break;
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        skipTime(10);
+                        break;
+                    case 'ArrowUp':
+                        e.preventDefault();
+                        adjustVolume(0.1);
+                        break;
+                    case 'ArrowDown':
+                        e.preventDefault();
+                        adjustVolume(-0.1);
+                        break;
+                }
+            });
+        }
+    }
+    
+    function skipTime(seconds) {
+        videoPlayer.currentTime = Math.max(0, Math.min(videoPlayer.duration, videoPlayer.currentTime + seconds));
+    }
+    
+    function adjustVolume(delta) {
+        const newVolume = Math.max(0, Math.min(1, videoPlayer.volume + delta));
+        videoPlayer.volume = newVolume;
+        if (volumeSlider) volumeSlider.value = newVolume;
+        updateMuteButton();
+    }
+    
+    function toggleMute() {
+        videoPlayer.muted = !videoPlayer.muted;
+        updateMuteButton();
+    }
+
     // Play local video file
     videoFileInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
             const videoUrl = detectAndHandleFormat(file, true);
             resetSubtitles();
+            
+            // Show loading state on mobile
+            if (isMobile) {
+                showToast('Loading video...');
+            }
         }
     });
 
@@ -158,9 +415,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (url) {
             detectAndHandleFormat(url);
             resetSubtitles();
+            
+            if (isMobile) {
+                showToast('Loading stream...');
+            }
         }
     });
-
+    
     // Load subtitles
     subtitleFileInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -316,11 +577,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function togglePlayPause() {
         if (videoPlayer.paused || videoPlayer.ended) {
-            videoPlayer.play();
-            playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+            videoPlayer.play().then(() => {
+                if (playPauseButton) {
+                    playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+                }
+                if (!isMobile) {
+                    setupControlsAutoHide();
+                }
+            }).catch(error => {
+                console.warn('Play failed:', error);
+                showToast('Playback failed');
+            });
         } else {
             videoPlayer.pause();
-            playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+            if (playPauseButton) {
+                playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+            }
         }
     }
 
@@ -344,8 +616,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function updateMuteButton() {
+        if (!muteButton) return;
+        
         if (videoPlayer.muted || videoPlayer.volume === 0) {
             muteButton.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        } else if (videoPlayer.volume < 0.5) {
+            muteButton.innerHTML = '<i class="fas fa-volume-down"></i>';
         } else {
             muteButton.innerHTML = '<i class="fas fa-volume-up"></i>';
         }
@@ -354,7 +630,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Volume control
     volumeSlider.addEventListener('input', function() {
         videoPlayer.volume = volumeSlider.value;
-        videoPlayer.muted = (volumeSlider.value === 0);
+        videoPlayer.muted = (volumeSlider.value == 0);
         updateMuteButton();
     });
 
@@ -371,38 +647,109 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Progress bar functionality
     videoPlayer.addEventListener('timeupdate', updateProgress);
+    videoPlayer.addEventListener('loadedmetadata', function() {
+        updateProgress();
+        enhanceProgressBarForTouch();
+    });
 
     function updateProgress() {
         const currentTime = videoPlayer.currentTime;
         const duration = videoPlayer.duration;
         
-        if (!isNaN(duration)) {
+        if (!isNaN(duration) && duration > 0) {
             // Update progress bar
             const progressPercentage = (currentTime / duration) * 100;
-            progressFill.style.width = progressPercentage + '%';
+            if (progressFill) {
+                progressFill.style.width = progressPercentage + '%';
+            }
             
             // Update time display
-            currentTimeElement.textContent = formatTime(currentTime);
-            durationElement.textContent = formatTime(duration);
+            if (currentTimeElement) {
+                currentTimeElement.textContent = formatTime(currentTime);
+            }
+            if (durationElement) {
+                durationElement.textContent = formatTime(duration);
+            }
+        }
+    }
+
+    // Enhanced seek functionality
+    const progressContainer = document.querySelector('.progress-container');
+    if (progressContainer) {
+        progressContainer.addEventListener('click', function(e) {
+            const rect = progressContainer.getBoundingClientRect();
+            const clickPosition = e.clientX - rect.left;
+            const percentage = clickPosition / rect.width;
+            
+            if (videoPlayer.duration) {
+                videoPlayer.currentTime = percentage * videoPlayer.duration;
+            }
+        });
+    }
+
+    // Toast notification system
+    function showToast(message, duration = 3000) {
+        const toast = document.querySelector('.toast-notification');
+        const content = document.querySelector('.toast-content');
+        
+        if (toast && content) {
+            content.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
         }
     }
 
     // Format time in MM:SS format
     function formatTime(seconds) {
-        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
         seconds = Math.floor(seconds % 60);
-        return (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+        
+        if (hours > 0) {
+            return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        } else {
+            return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
     }
 
-    // Seek functionality when clicking progress bar
-    progressBar.addEventListener('click', function(e) {
-        const progressBarRect = progressBar.getBoundingClientRect();
-        const clickPositionInBar = e.clientX - progressBarRect.left;
-        const percentageClicked = clickPositionInBar / progressBarRect.width;
-        
-        videoPlayer.currentTime = percentageClicked * videoPlayer.duration;
+    // Initialize everything
+    updateMuteButton();
+    enhanceVolumeControlForMobile();
+    setupKeyboardShortcuts();
+    
+    // Handle orientation changes
+    window.addEventListener('orientationchange', function() {
+        setTimeout(() => {
+            // Recalculate dimensions after orientation change
+            if (videoPlayer) {
+                videoPlayer.style.width = '100%';
+                videoPlayer.style.height = '100%';
+            }
+        }, 100);
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        // Update mobile detection on resize
+        const newIsMobile = window.innerWidth <= 768;
+        if (newIsMobile !== isMobile) {
+            location.reload(); // Reload to apply mobile/desktop styles
+        }
     });
 
-    // Initialize volume display
-    updateMuteButton();
+    // Prevent zoom on double tap for better UX
+    if (isTouchDevice) {
+        document.addEventListener('touchend', function(e) {
+            const touch = e.changedTouches[0];
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            
+            if (tapLength < 500 && tapLength > 0) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    }
 });

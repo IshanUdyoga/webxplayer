@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>WebX Player - Modern Media Player</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -10,6 +13,11 @@
     <!-- Add format support libraries -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
+    
+    <!-- Preconnect to improve loading performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 </head>
 <body>
     <div class="app-container">
@@ -23,8 +31,8 @@
             <div class="stream-container">
                 <h3>Stream Video</h3>
                 <div class="url-input-container">
-                    <input type="text" id="video-url" placeholder="Enter video URL..." class="url-input">
-                    <button id="load-url" class="url-button">
+                    <input type="text" id="video-url" placeholder="Enter video URL..." class="url-input" autocomplete="off" autocapitalize="off" autocorrect="off">
+                    <button id="load-url" class="url-button" aria-label="Load URL">
                         <i class="fas fa-play"></i>
                     </button>
                 </div>
@@ -36,9 +44,9 @@
             
             <div class="playlist-container">
                 <h3>Playlist</h3>
-                <ul id="playlist"></ul>
+                <ul id="playlist" role="list"></ul>
                 <div class="add-media">
-                    <label for="media-upload" class="upload-btn">
+                    <label for="media-upload" class="upload-btn" role="button" tabindex="0">
                         <i class="fas fa-plus"></i> Add Media
                     </label>
                     <input type="file" id="media-upload" accept="video/*,audio/*" multiple hidden>
@@ -48,38 +56,38 @@
         
         <div class="player-container">
             <div class="video-container" id="video-container">
-                <video id="video-player"></video>
+                <video id="video-player" playsinline webkit-playsinline preload="metadata" aria-label="Video player"></video>
                 <div class="video-overlay">
-                    <div class="big-play-button">
+                    <div class="big-play-button" role="button" aria-label="Play video" tabindex="0">
                         <i class="fas fa-play"></i>
                     </div>
                 </div>
-                <div class="subtitle-container" id="subtitle-container"></div>
+                <div class="subtitle-container" id="subtitle-container" aria-live="polite"></div>
             </div>
             
             <div class="controls-container">
-                <div class="progress-container">
+                <div class="progress-container" role="slider" aria-label="Video progress" tabindex="0">
                     <div class="buffered-bar"></div>
                     <div class="progress-bar"></div>
-                    <input type="range" class="seek-slider" min="0" max="100" value="0" step="0.1">
+                    <input type="range" class="seek-slider" min="0" max="100" value="0" step="0.1" aria-label="Seek video">
                     <div class="time-tooltip">00:00</div>
                 </div>
                 
                 <div class="main-controls">
                     <div class="left-controls">
-                        <button class="control-btn play-pause">
+                        <button class="control-btn play-pause" aria-label="Play/Pause">
                             <i class="fas fa-play"></i>
                         </button>
-                        <button class="control-btn stop">
+                        <button class="control-btn stop" aria-label="Stop">
                             <i class="fas fa-stop"></i>
                         </button>
-                        <button class="control-btn skip-backward">
+                        <button class="control-btn skip-backward" aria-label="Skip backward">
                             <i class="fas fa-backward"></i>
                         </button>
-                        <button class="control-btn skip-forward">
+                        <button class="control-btn skip-forward" aria-label="Skip forward">
                             <i class="fas fa-forward"></i>
                         </button>
-                        <div class="time-display">
+                        <div class="time-display" aria-label="Video time">
                             <span class="current-time">00:00</span>
                             <span class="time-separator">/</span>
                             <span class="total-time">00:00</span>
@@ -88,40 +96,40 @@
                     
                     <div class="right-controls">
                         <div class="speed-control">
-                            <button class="control-btn speed-btn">
+                            <button class="control-btn speed-btn" aria-label="Playback speed" aria-haspopup="true">
                                 <i class="fas fa-tachometer-alt"></i>
                                 <span class="speed-value">1.0x</span>
                             </button>
-                            <div class="speed-dropdown">
-                                <div class="speed-option" data-speed="0.25">0.25x</div>
-                                <div class="speed-option" data-speed="0.5">0.5x</div>
-                                <div class="speed-option" data-speed="0.75">0.75x</div>
-                                <div class="speed-option" data-speed="1.0">1.0x</div>
-                                <div class="speed-option" data-speed="1.25">1.25x</div>
-                                <div class="speed-option" data-speed="1.5">1.5x</div>
-                                <div class="speed-option" data-speed="1.75">1.75x</div>
-                                <div class="speed-option" data-speed="2.0">2.0x</div>
+                            <div class="speed-dropdown" role="menu">
+                                <div class="speed-option" data-speed="0.25" role="menuitem">0.25x</div>
+                                <div class="speed-option" data-speed="0.5" role="menuitem">0.5x</div>
+                                <div class="speed-option" data-speed="0.75" role="menuitem">0.75x</div>
+                                <div class="speed-option" data-speed="1.0" role="menuitem">1.0x</div>
+                                <div class="speed-option" data-speed="1.25" role="menuitem">1.25x</div>
+                                <div class="speed-option" data-speed="1.5" role="menuitem">1.5x</div>
+                                <div class="speed-option" data-speed="1.75" role="menuitem">1.75x</div>
+                                <div class="speed-option" data-speed="2.0" role="menuitem">2.0x</div>
                             </div>
                         </div>
-                        <button class="control-btn subtitle-btn">
+                        <button class="control-btn subtitle-btn" aria-label="Toggle subtitles">
                             <i class="fas fa-closed-captioning"></i>
                         </button>
-                        <label for="subtitle-upload" class="control-btn subtitle-upload-btn">
+                        <label for="subtitle-upload" class="control-btn subtitle-upload-btn" aria-label="Upload subtitles">
                             <i class="fas fa-file-alt"></i>
                         </label>
-                        <input type="file" id="subtitle-upload" accept=".srt,.vtt" hidden>
+                        <input type="file" id="subtitle-upload" accept=".srt,.vtt,.ass,.ssa" hidden>
                         <div class="volume-control">
-                            <button class="control-btn volume-btn">
+                            <button class="control-btn volume-btn" aria-label="Volume control" aria-haspopup="true">
                                 <i class="fas fa-volume-up"></i>
                             </button>
                             <div class="volume-slider-container">
-                                <input type="range" class="volume-slider" min="0" max="1" step="0.05" value="1">
+                                <input type="range" class="volume-slider" min="0" max="1" step="0.05" value="1" aria-label="Volume level">
                             </div>
                         </div>
-                        <button class="control-btn fullscreen-btn">
+                        <button class="control-btn fullscreen-btn" aria-label="Toggle fullscreen">
                             <i class="fas fa-expand"></i>
                         </button>
-                        <button class="control-btn settings-btn">
+                        <button class="control-btn settings-btn" aria-label="Settings" aria-haspopup="true">
                             <i class="fas fa-cog"></i>
                         </button>
                     </div>
@@ -130,21 +138,20 @@
         </div>
     </div>
     
-    <div class="settings-panel">
+    <div class="settings-panel" role="dialog" aria-labelledby="settings-title" aria-hidden="true">
         <div class="settings-header">
-            <h3>Settings</h3>
-            <button class="close-settings">
+            <h3 id="settings-title">Settings</h3>
+            <button class="close-settings" aria-label="Close settings">
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <div class="settings-tabs">
-            <button class="tab-btn active" data-tab="video">Video</button>
-            <button class="tab-btn" data-tab="subtitles">Subtitles</button>
-            <!-- Additional tabs can be added here in the future -->
+        <div class="settings-tabs" role="tablist">
+            <button class="tab-btn active" data-tab="video" role="tab" aria-selected="true" aria-controls="video-tab">Video</button>
+            <button class="tab-btn" data-tab="subtitles" role="tab" aria-selected="false" aria-controls="subtitles-tab">Subtitles</button>
         </div>
         <div class="settings-content">
             <!-- Video Settings Tab -->
-            <div class="settings-tab-content active" id="video-tab">
+            <div class="settings-tab-content active" id="video-tab" role="tabpanel" aria-labelledby="video-tab-btn">
                 <div class="settings-section">
                     <h4>Video Quality</h4>
                     <div class="quality-options">
@@ -165,7 +172,7 @@
             </div>
             
             <!-- Subtitles Settings Tab -->
-            <div class="settings-tab-content" id="subtitles-tab">
+            <div class="settings-tab-content" id="subtitles-tab" role="tabpanel" aria-labelledby="subtitles-tab-btn">
                 <div class="settings-section">
                     <h4>Subtitle Display</h4>
                     <div class="subtitle-toggle-container">
@@ -256,12 +263,12 @@
         </div>
     </div>
     
-    <div class="toast-notification">
+    <div class="toast-notification" role="alert" aria-live="polite">
         <div class="toast-content"></div>
     </div>
     
     <!-- Add a format information display -->
-    <div class="format-info">
+    <div class="format-info" aria-label="Current media format">
         <span id="current-format">No media loaded</span>
     </div>
     

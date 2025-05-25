@@ -44,6 +44,30 @@ body {
     display: flex;
     height: 100vh;
     width: 100vw;
+    flex-direction: row;
+}
+
+/* Mobile-first responsive breakpoints */
+@media (max-width: 480px) {
+    .app-container {
+        flex-direction: column;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .app-container {
+        flex-direction: row;
+    }
+    
+    .sidebar {
+        width: 220px;
+    }
 }
 
 /* Sidebar styling */
@@ -55,6 +79,7 @@ body {
     display: flex;
     flex-direction: column;
     border-right: 1px solid var(--bg-tertiary);
+    overflow-y: auto;
 }
 
 .logo {
@@ -146,6 +171,7 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
+    min-height: 0; /* Fix flex shrinking */
 }
 
 .video-container {
@@ -155,6 +181,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 200px; /* Minimum height for mobile */
 }
 
 #video-player {
@@ -195,6 +222,9 @@ body {
     justify-content: center;
     cursor: pointer;
     transition: var(--transition);
+    /* Better touch target for mobile */
+    min-width: 44px;
+    min-height: 44px;
 }
 
 .big-play-button i {
@@ -229,7 +259,7 @@ body {
 /* Controls container styling */
 .controls-container {
     background-color: var(--controls-bg);
-    padding: 5px 15px 10px;
+    padding: 8px 15px 12px;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -239,18 +269,30 @@ body {
     transition: opacity 0.3s ease;
     border-radius: 0 0 10px 10px;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
 }
 
 .controls-container:hover {
-    opacity: 1 !important; /* Force visibility when hovered */
+    opacity: 1 !important;
 }
 
 .video-container:hover .controls-container {
     opacity: 1;
 }
 
+/* Show controls on mobile by default */
+@media (max-width: 768px) {
+    .controls-container {
+        opacity: 1;
+        position: relative;
+        background-color: var(--bg-secondary);
+        border-radius: 0;
+        padding: 10px;
+    }
+}
+
 .progress-container {
-    height: 15px;
+    height: 20px; /* Increased for better touch */
     position: relative;
     margin-bottom: 10px;
     cursor: pointer;
@@ -278,7 +320,7 @@ body {
 .seek-slider {
     position: absolute;
     width: 100%;
-    height: 15px;
+    height: 20px; /* Increased for better touch */
     top: 0;
     left: 0;
     opacity: 0;
@@ -303,27 +345,32 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
 }
 
 .left-controls, .right-controls {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .control-btn {
     background: none;
     border: none;
     color: var(--text-color);
-    font-size: 1rem;
+    font-size: 1.1rem;
     cursor: pointer;
-    width: 35px;
-    height: 35px;
+    width: 44px; /* Increased for better touch */
+    height: 44px; /* Increased for better touch */
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: var(--transition);
+    /* Ensure minimum touch target size */
+    min-width: 44px;
+    min-height: 44px;
 }
 
 .control-btn:hover {
@@ -336,6 +383,7 @@ body {
     display: flex;
     align-items: center;
     gap: 5px;
+    white-space: nowrap;
 }
 
 .speed-control, .volume-control {
@@ -346,8 +394,9 @@ body {
     display: flex;
     align-items: center;
     width: auto;
-    border-radius: 15px;
-    padding: 0 10px;
+    border-radius: 22px; /* Adjusted for new height */
+    padding: 0 12px;
+    min-width: 44px;
 }
 
 .speed-btn i {
@@ -359,7 +408,7 @@ body {
     background-color: var(--bg-tertiary);
     border-radius: 6px;
     padding: 10px;
-    bottom: 40px;
+    bottom: 50px; /* Adjusted for larger controls */
     right: 0;
     display: none;
     z-index: 100;
@@ -384,28 +433,28 @@ body {
 }
 
 .volume-slider-container {
-    padding: 10px;
+    padding: 15px; /* Increased for better touch */
     transform: rotate(-90deg);
     transform-origin: bottom right;
     right: 0;
-    bottom: 50px;
+    bottom: 60px; /* Adjusted for larger controls */
 }
 
 .volume-slider {
-    width: 80px;
+    width: 100px; /* Increased for better touch */
     -webkit-appearance: none;
     appearance: none;
-    height: 5px;
+    height: 8px; /* Increased for better touch */
     background: var(--text-secondary);
-    border-radius: 2.5px;
+    border-radius: 4px;
     outline: none;
 }
 
 .volume-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 12px;
-    height: 12px;
+    width: 20px; /* Increased for better touch */
+    height: 20px; /* Increased for better touch */
     border-radius: 50%;
     background: var(--primary-color);
     cursor: pointer;
@@ -423,6 +472,7 @@ body {
     transform: translateX(100%);
     transition: transform 0.3s ease;
     z-index: 1000;
+    overflow-y: auto;
 }
 
 .settings-panel.show {
@@ -872,39 +922,358 @@ input:checked + .slider:before {
     .sidebar {
         width: 100%;
         height: auto;
-        max-height: 30vh;
+        max-height: 40vh;
         border-right: none;
         border-bottom: 1px solid var(--bg-tertiary);
+        padding: 15px;
+        overflow-y: auto;
     }
     
-    .time-display {
-        display: none;
+    .logo h2 {
+        font-size: 1.1rem;
     }
     
-    .controls-container {
-        padding: 5px 10px 8px;
+    .stream-container {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
     }
     
-    .control-btn {
-        width: 30px;
-        height: 30px;
+    .url-input-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .url-button {
+        width: 100%;
+        height: 40px;
+        border-radius: 6px;
+    }
+    
+    .playlist-container h3 {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+    
+    #playlist li {
+        padding: 12px 8px;
         font-size: 0.9rem;
     }
     
-    .right-controls {
-        gap: 5px;
+    .upload-btn {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+    
+    .player-container {
+        height: calc(100vh - 40vh);
+    }
+    
+    .video-container {
+        min-height: 250px;
+    }
+    
+    .controls-container {
+        position: relative;
+        opacity: 1;
+        background-color: var(--bg-secondary);
+        border-radius: 0;
+        padding: 12px 10px;
+    }
+    
+    .progress-container {
+        height: 25px;
+        margin-bottom: 12px;
+    }
+    
+    .main-controls {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .left-controls, .right-controls {
+        justify-content: center;
+        gap: 15px;
+    }
+    
+    .control-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+    }
+    
+    .time-display {
+        order: -1;
+        font-size: 1rem;
+        margin-bottom: 8px;
     }
     
     .speed-btn {
-        width: auto;
-        padding: 0 5px;
+        padding: 0 15px;
+        font-size: 1rem;
     }
     
     .speed-btn span {
-        display: none;
+        display: inline;
+    }
+    
+    .speed-dropdown, .volume-slider-container {
+        bottom: 60px;
+        font-size: 1rem;
     }
     
     .url-history {
-        display: none;
+        display: block;
+        max-height: 80px;
+    }
+    
+    #url-history-list li {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+    }
+    
+    .settings-panel {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        transform: translateX(100%);
+    }
+    
+    .settings-content {
+        padding: 20px;
+    }
+    
+    .settings-section {
+        margin-bottom: 25px;
+    }
+    
+    .shortcuts-list {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .shortcut-item {
+        padding: 12px;
+    }
+    
+    .big-play-button {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .big-play-button i {
+        font-size: 2.5rem;
+    }
+    
+    .subtitle-container {
+        bottom: 80px;
+        font-size: 1.1rem;
+        padding: 0 15px;
+    }
+    
+    .subtitle-container p {
+        padding: 8px 12px;
+        border-radius: 6px;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 35vh;
+        border-right: none;
+        border-bottom: 1px solid var(--bg-tertiary);
+        padding: 18px;
+    }
+    
+    .url-input-container {
+        gap: 10px;
+    }
+    
+    .player-container {
+        height: calc(100vh - 35vh);
+    }
+    
+    .video-container {
+        min-height: 300px;
+    }
+    
+    .controls-container {
+        position: relative;
+        opacity: 1;
+        background-color: var(--bg-secondary);
+        border-radius: 0;
+        padding: 10px 15px;
+    }
+    
+    .control-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+    }
+    
+    .left-controls, .right-controls {
+        gap: 12px;
+    }
+    
+    .time-display {
+        font-size: 0.95rem;
+    }
+    
+    .speed-btn span {
+        display: inline;
+    }
+    
+    .settings-panel {
+        width: 350px;
+    }
+    
+    .big-play-button {
+        width: 90px;
+        height: 90px;
+    }
+    
+    .big-play-button i {
+        font-size: 2.2rem;
+    }
+    
+    .subtitle-container {
+        bottom: 75px;
+        font-size: 1.05rem;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .sidebar {
+        width: 220px;
+        padding: 18px;
+    }
+    
+    .logo h2 {
+        font-size: 1.1rem;
+    }
+    
+    .control-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .settings-panel {
+        width: 280px;
+    }
+}
+
+@media (min-width: 1025px) {
+    .sidebar {
+        width: 280px;
+    }
+    
+    .settings-panel {
+        width: 300px;
+    }
+}
+
+/* Touch-specific optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .control-btn:hover {
+        background-color: transparent;
+    }
+    
+    .control-btn:active {
+        background-color: var(--bg-tertiary);
+        transform: scale(0.95);
+    }
+    
+    #playlist li:hover {
+        background-color: transparent;
+    }
+    
+    #playlist li:active {
+        background-color: var(--bg-tertiary);
+    }
+    
+    .upload-btn:hover {
+        background-color: var(--primary-color);
+    }
+    
+    .upload-btn:active {
+        background-color: var(--primary-dark);
+        transform: scale(0.98);
+    }
+    
+    .speed-option:hover,
+    .quality-option:hover,
+    .theme-option:hover {
+        background-color: transparent;
+    }
+    
+    .speed-option:active,
+    .quality-option:active,
+    .theme-option:active {
+        background-color: var(--primary-color);
+        color: white;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .app-container {
+        flex-direction: row;
+    }
+    
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        max-height: none;
+        border-right: 1px solid var(--bg-tertiary);
+        border-bottom: none;
+    }
+    
+    .player-container {
+        height: 100vh;
+    }
+    
+    .controls-container {
+        position: absolute;
+        bottom: 0;
+        opacity: 0;
+        background-color: var(--controls-bg);
+        border-radius: 0 0 10px 10px;
+    }
+    
+    .video-container:hover .controls-container {
+        opacity: 1;
+    }
+    
+    .main-controls {
+        flex-direction: row;
+    }
+    
+    .time-display {
+        order: 0;
+        margin-bottom: 0;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .control-btn {
+        border: 1px solid transparent;
+    }
+    
+    .progress-bar, .buffered-bar {
+        height: 6px;
+        top: 7px;
+    }
+    
+    .seek-slider {
+        height: 22px;
     }
 }
