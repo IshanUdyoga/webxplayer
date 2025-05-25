@@ -242,7 +242,7 @@ body {
 }
 
 .controls-container:hover {
-    opacity: 1;
+    opacity: 1 !important; /* Force visibility when hovered */
 }
 
 .video-container:hover .controls-container {

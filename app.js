@@ -291,6 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize floating controls behavior
     function initializeFloatingControls() {
         const controlsContainer = document.querySelector('.controls-container');
+        const videoOverlay = document.querySelector('.video-overlay');
         controlsContainer.style.opacity = '0';
         
         // Show controls initially when video is loaded
@@ -298,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showControls();
             setTimeout(() => {
                 if (isPlaying) {
-                    controlsContainer.style.opacity = '0';
+                    startHideControlsTimer();
                 }
             }, 3000);
         });
@@ -306,12 +307,44 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show controls on pause
         videoPlayer.addEventListener('pause', () => {
             controlsContainer.style.opacity = '1';
+            videoOverlay.style.opacity = '1';
             clearTimeout(hideControlsTimeout);
         });
         
         // Hide controls when playing if mouse is inactive
         videoPlayer.addEventListener('play', () => {
             startHideControlsTimer();
+        });
+        
+        // Prevent controls from hiding when mouse is over them
+        controlsContainer.addEventListener('mouseenter', () => {
+            controlsContainer.style.opacity = '1';
+            clearTimeout(hideControlsTimeout);
+        });
+        
+        controlsContainer.addEventListener('mouseleave', () => {
+            if (isPlaying) {
+                startHideControlsTimer();
+            }
+        });
+        
+        // Sync video overlay with controls visibility
+        videoPlayer.addEventListener('mouseenter', () => {
+            if (!isPlaying) {
+                videoOverlay.style.opacity = '1';
+            }
+        });
+
+        // Update format info when media is loaded
+        videoPlayer.addEventListener('loadeddata', () => {
+            updateFormatInfo();
+            // Show controls when media is loaded
+            showControls();
+            setTimeout(() => {
+                if (isPlaying) {
+                    startHideControlsTimer();
+                }
+            }, 3000);
         });
     }
 
@@ -371,6 +404,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Update UI
             renderPlaylist();
             savePlaylistToLocalStorage();
+            
+            // Update format info
+            updateFormatInfo();
         } catch (error) {
             console.error('Error loading video URL:', error);
             showToast('Invalid URL format. Please check and try again.');
@@ -687,7 +723,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show/hide controls
     function showControls() {
         const controlsContainer = document.querySelector('.controls-container');
+        const videoOverlay = document.querySelector('.video-overlay');
         controlsContainer.style.opacity = '1';
+        
+        if (!isPlaying) {
+            videoOverlay.style.opacity = '1';
+        }
         
         clearTimeout(hideControlsTimeout);
         
@@ -697,10 +738,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function hideControls() {
-        clearTimeout(hideControlsTimeout);
+        const controlsContainer = document.querySelector('.controls-container');
+        const videoOverlay = document.querySelector('.video-overlay');
         
-        if (isPlaying) {
-            document.querySelector('.controls-container').style.opacity = '0';
+        // Only hide if not being hovered
+        if (!controlsContainer.matches(':hover')) {
+            controlsContainer.style.opacity = '0';
+            videoOverlay.style.opacity = '0';
         }
     }
 
@@ -708,7 +752,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearTimeout(hideControlsTimeout);
         hideControlsTimeout = setTimeout(() => {
             if (isPlaying && !settingsPanel.classList.contains('show')) {
-                document.querySelector('.controls-container').style.opacity = '0';
+                hideControls();
             }
         }, 3000);
     }
@@ -997,6 +1041,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 playMedia();
                 
                 renderPlaylist();
+                
+                // Update format info
+                updateFormatInfo();
             } catch (error) {
                 console.error('Error playing media at index', index, error);
                 showToast('Error playing this media file');
@@ -1139,6 +1186,47 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             toast.classList.remove('show');
         }, 2000);
+    }
+
+    // Add this function to update the format information display
+    function updateFormatInfo() {
+        const formatInfoElement = document.getElementById('current-format');
+        
+        if (videoPlayer.src) {
+            // Get the current source URL
+            const sourceUrl = videoPlayer.src;
+            
+            // Extract filename or domain
+            let displayText = '';
+            
+            if (sourceUrl.startsWith('blob:')) {
+                // For local files (blob URLs)
+                const currentItem = playlistItems[currentMediaIndex];
+                if (currentItem) {
+                    displayText = `Playing: ${currentItem.name}`;
+                } else {
+                    displayText = 'Playing local file';
+                }
+            } else {
+                // For URLs, extract domain or filename
+                try {
+                    const url = new URL(sourceUrl);
+                    if (url.pathname.split('/').pop().includes('.')) {
+                        // If URL has a filename
+                        displayText = `Playing: ${url.pathname.split('/').pop()}`;
+                    } else {
+                        // If URL is a stream
+                        displayText = `Streaming from: ${url.hostname}`;
+                    }
+                } catch (e) {
+                    displayText = 'Playing media';
+                }
+            }
+            
+            formatInfoElement.textContent = displayText;
+        } else {
+            formatInfoElement.textContent = 'No media loaded';
+        }
     }
 
     // Initialize
