@@ -73,9 +73,28 @@ document.addEventListener('DOMContentLoaded', function() {
             const deltaX = touch.clientX - touchStartX;
             const deltaY = touch.clientY - touchStartY;
             
-            // Prevent scrolling when swiping on video
-            if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
+            // Only prevent default if it's a clear horizontal swipe on video
+            // Allow vertical scrolling everywhere
+            const target = e.target;
+            const isOnVideo = target === videoPlayer || videoContainer.contains(target);
+            const isHorizontalSwipe = Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20;
+            const isVerticalScroll = Math.abs(deltaY) > Math.abs(deltaX);
+            
+            // Allow scrolling in sidebar and settings
+            const isInScrollableArea = target.closest('.sidebar') || 
+                                     target.closest('.settings-panel') || 
+                                     target.closest('#playlist') ||
+                                     target.closest('#url-history-list') ||
+                                     target.closest('.settings-content');
+            
+            // Only prevent default for horizontal swipes on video area
+            if (isOnVideo && isHorizontalSwipe && !isVerticalScroll) {
                 e.preventDefault();
+            }
+            
+            // Always allow vertical scrolling in scrollable areas
+            if (isInScrollableArea && isVerticalScroll) {
+                return; // Don't prevent default
             }
         }
     }
@@ -85,9 +104,17 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const touchEndTime = Date.now();
         const touchDuration = touchEndTime - touchStartTime;
+        const target = e.target;
         
-        // Single tap to toggle controls (only on non-mobile or when controls are hidden)
-        if (touchDuration < 300 && (!isMobile || !isControlsVisible)) {
+        // Only handle tap gestures on video area, not on UI elements
+        const isOnVideo = target === videoPlayer || 
+                         (videoContainer.contains(target) && 
+                          !target.closest('.controls-container') &&
+                          !target.closest('.sidebar') &&
+                          !target.closest('.settings-panel'));
+        
+        // Single tap to toggle controls (only on video area)
+        if (touchDuration < 300 && isOnVideo && (!isMobile || !isControlsVisible)) {
             toggleControls();
         }
         
@@ -97,9 +124,17 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleDoubleTap(e) {
         const currentTime = new Date().getTime();
         const tapLength = currentTime - lastTap;
+        const target = e.target;
         
-        if (tapLength < 500 && tapLength > 0) {
-            // Double tap detected
+        // Only handle double tap on video area
+        const isOnVideo = target === videoPlayer || 
+                         (videoContainer.contains(target) && 
+                          !target.closest('.controls-container') &&
+                          !target.closest('.sidebar') &&
+                          !target.closest('.settings-panel'));
+        
+        if (tapLength < 500 && tapLength > 0 && isOnVideo) {
+            // Double tap detected on video
             e.preventDefault();
             toggleFullscreen();
         }
@@ -740,14 +775,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Prevent zoom on double tap for better UX
+    // Prevent zoom on double tap for better UX (but allow scrolling)
     if (isTouchDevice) {
         document.addEventListener('touchend', function(e) {
             const touch = e.changedTouches[0];
             const currentTime = new Date().getTime();
             const tapLength = currentTime - lastTap;
+            const target = e.target;
             
-            if (tapLength < 500 && tapLength > 0) {
+            // Only prevent zoom on video area, allow normal behavior elsewhere
+            const isOnVideo = target === videoPlayer || 
+                             (videoContainer.contains(target) && 
+                              !target.closest('.controls-container') &&
+                              !target.closest('.sidebar') &&
+                              !target.closest('.settings-panel'));
+            
+            if (tapLength < 500 && tapLength > 0 && isOnVideo) {
                 e.preventDefault();
             }
         }, { passive: false });

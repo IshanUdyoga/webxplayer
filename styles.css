@@ -36,8 +36,11 @@ body {
     font-family: 'Roboto', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    overflow: hidden;
+    overflow: auto; /* Changed from hidden to auto */
     height: 100vh;
+    /* Add proper touch scrolling for iOS */
+    -webkit-overflow-scrolling: touch;
+    touch-action: manipulation;
 }
 
 .app-container {
@@ -45,18 +48,27 @@ body {
     height: 100vh;
     width: 100vw;
     flex-direction: row;
+    /* Allow scrolling on mobile */
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Mobile-first responsive breakpoints */
 @media (max-width: 480px) {
     .app-container {
         flex-direction: column;
+        height: auto; /* Allow natural height */
+        min-height: 100vh;
+        overflow-y: auto; /* Enable vertical scrolling */
     }
 }
 
 @media (min-width: 481px) and (max-width: 768px) {
     .app-container {
         flex-direction: column;
+        height: auto; /* Allow natural height */
+        min-height: 100vh;
+        overflow-y: auto; /* Enable vertical scrolling */
     }
 }
 
@@ -80,6 +92,9 @@ body {
     flex-direction: column;
     border-right: 1px solid var(--bg-tertiary);
     overflow-y: auto;
+    /* Improve touch scrolling */
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y; /* Allow vertical panning */
 }
 
 .logo {
@@ -120,6 +135,9 @@ body {
     overflow-y: auto;
     flex-grow: 1;
     margin-bottom: 15px;
+    /* Improve touch scrolling */
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
 }
 
 #playlist li {
@@ -473,6 +491,9 @@ body {
     transition: transform 0.3s ease;
     z-index: 1000;
     overflow-y: auto;
+    /* Improve touch scrolling */
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
 }
 
 .settings-panel.show {
@@ -499,6 +520,9 @@ body {
     padding: 15px;
     overflow-y: auto;
     height: calc(100% - 55px);
+    /* Improve touch scrolling */
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
 }
 
 .settings-section {
@@ -639,6 +663,9 @@ body {
     list-style: none;
     max-height: 120px;
     overflow-y: auto;
+    /* Improve touch scrolling */
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
 }
 
 #url-history-list li {
@@ -915,18 +942,30 @@ input:checked + .slider:before {
 
 /* Responsive design */
 @media (max-width: 768px) {
+    body {
+        overflow: auto; /* Allow scrolling on mobile */
+        -webkit-overflow-scrolling: touch;
+    }
+    
     .app-container {
         flex-direction: column;
+        height: auto; /* Remove fixed height */
+        min-height: 100vh;
+        overflow-y: auto;
     }
     
     .sidebar {
         width: 100%;
         height: auto;
-        max-height: 40vh;
+        max-height: none; /* Remove height restriction */
         border-right: none;
         border-bottom: 1px solid var(--bg-tertiary);
         padding: 15px;
         overflow-y: auto;
+        /* Enable proper scrolling */
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
+        flex-shrink: 0; /* Prevent shrinking */
     }
     
     .logo h2 {
@@ -965,11 +1004,14 @@ input:checked + .slider:before {
     }
     
     .player-container {
-        height: calc(100vh - 40vh);
+        height: auto; /* Remove fixed height */
+        min-height: 60vh;
+        flex-shrink: 0;
     }
     
     .video-container {
         min-height: 250px;
+        height: 60vh; /* Set relative height */
     }
     
     .controls-container {
@@ -1038,6 +1080,8 @@ input:checked + .slider:before {
         left: 0;
         height: 100vh;
         transform: translateX(100%);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
     .settings-content {
@@ -1081,15 +1125,21 @@ input:checked + .slider:before {
 @media (min-width: 481px) and (max-width: 768px) {
     .app-container {
         flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
     }
     
     .sidebar {
         width: 100%;
         height: auto;
-        max-height: 35vh;
+        max-height: none;
         border-right: none;
         border-bottom: 1px solid var(--bg-tertiary);
         padding: 18px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
     }
     
     .url-input-container {
@@ -1097,11 +1147,13 @@ input:checked + .slider:before {
     }
     
     .player-container {
-        height: calc(100vh - 35vh);
+        height: auto;
+        min-height: 65vh;
     }
     
     .video-container {
         min-height: 300px;
+        height: 65vh;
     }
     
     .controls-container {
@@ -1149,83 +1201,12 @@ input:checked + .slider:before {
     }
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
-    .sidebar {
-        width: 220px;
-        padding: 18px;
-    }
-    
-    .logo h2 {
-        font-size: 1.1rem;
-    }
-    
-    .control-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-    }
-    
-    .settings-panel {
-        width: 280px;
-    }
-}
-
-@media (min-width: 1025px) {
-    .sidebar {
-        width: 280px;
-    }
-    
-    .settings-panel {
-        width: 300px;
-    }
-}
-
-/* Touch-specific optimizations */
-@media (hover: none) and (pointer: coarse) {
-    .control-btn:hover {
-        background-color: transparent;
-    }
-    
-    .control-btn:active {
-        background-color: var(--bg-tertiary);
-        transform: scale(0.95);
-    }
-    
-    #playlist li:hover {
-        background-color: transparent;
-    }
-    
-    #playlist li:active {
-        background-color: var(--bg-tertiary);
-    }
-    
-    .upload-btn:hover {
-        background-color: var(--primary-color);
-    }
-    
-    .upload-btn:active {
-        background-color: var(--primary-dark);
-        transform: scale(0.98);
-    }
-    
-    .speed-option:hover,
-    .quality-option:hover,
-    .theme-option:hover {
-        background-color: transparent;
-    }
-    
-    .speed-option:active,
-    .quality-option:active,
-    .theme-option:active {
-        background-color: var(--primary-color);
-        color: white;
-    }
-}
-
 /* Landscape orientation on mobile */
 @media (max-width: 768px) and (orientation: landscape) {
     .app-container {
         flex-direction: row;
+        height: 100vh; /* Keep full height in landscape */
+        overflow: hidden; /* Prevent scrolling in landscape */
     }
     
     .sidebar {
@@ -1234,6 +1215,8 @@ input:checked + .slider:before {
         max-height: none;
         border-right: 1px solid var(--bg-tertiary);
         border-bottom: none;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
     .player-container {
