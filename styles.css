@@ -498,6 +498,7 @@ body {
 
 .settings-panel.show {
     transform: translateX(0);
+    visibility: visible; /* Show when active */
 }
 
 .settings-header {
@@ -940,30 +941,74 @@ input:checked + .slider:before {
     opacity: 1;
 }
 
+/* Settings panel visibility fix */
+.settings-panel {
+    visibility: hidden; /* Hide panel when closed */
+}
+
+.settings-panel.show {
+    visibility: visible; /* Show when active */
+}
+
 /* Navigation section in sidebar */
 .nav-container {
-    padding-bottom: 20px;
+    padding-bottom: 15px;
     border-bottom: 1px solid var(--bg-tertiary);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+}
+
+.nav-container.compact-nav {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.nav-toggle {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.nav-container.collapsed .nav-toggle i {
+    transform: rotate(-90deg);
+}
+
+.nav-container.collapsed .nav-list {
+    display: none;
 }
 
 .nav-container h3 {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 500;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     color: var(--text-secondary);
 }
 
 .nav-list {
     list-style: none;
+    display: flex;
+    gap: 5px;
 }
 
 .nav-list li {
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 5px;
+    padding: 6px 8px;
+    border-radius: 4px;
+    margin-bottom: 0;
     cursor: pointer;
     transition: var(--transition);
+    flex: 1;
 }
 
 .nav-list li:hover {
@@ -977,15 +1022,15 @@ input:checked + .slider:before {
 .nav-list li a {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    gap: 5px;
     color: var(--text-color);
     text-decoration: none;
+    font-size: 0.85rem;
 }
 
 .nav-list li i {
-    font-size: 1rem;
-    width: 20px;
-    text-align: center;
+    font-size: 0.9rem;
 }
 
 /* Responsive fixes for navigation */
@@ -993,24 +1038,25 @@ input:checked + .slider:before {
     .nav-list {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 5px;
     }
     
     .nav-list li {
         flex-grow: 1;
         text-align: center;
-        padding: 12px 10px;
+        padding: 8px 5px;
     }
     
     .nav-list li a {
         justify-content: center;
-        flex-direction: column;
+        flex-direction: row;
         gap: 5px;
+        font-size: 0.8rem;
     }
     
     .nav-list li i {
-        font-size: 1.2rem;
-        margin-bottom: 5px;
+        font-size: 0.9rem;
+        margin-bottom: 0;
     }
 }
 
