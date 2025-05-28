@@ -6,26 +6,52 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="description" content="Learn about WebXPlayer - a free HTML5 video player that lets you stream videos from URLs or play local media files with subtitles support.">
-    <meta name="keywords" content="video player, HTML5, streaming, URL player, subtitle support, online video player, free player">
-    <meta name="author" content="WebXPlayer Team">
+
+    <!-- SEO Meta Tags -->
+    <title>About URL Player - Stream & Play Videos Online Free</title>
+    <meta name="description" content="Discover URL Player: The ultimate free online HTML5 video player. Stream videos directly from URLs, play local files, enjoy full subtitle support, and manage playlists. No downloads needed, completely free!">
+    <meta name="keywords" content="URL Player, online video player, stream video from URL, HTML5 video player, play local video, subtitle support, free video player, M3U8 player, HLS player, DASH player, media player online, web video player, online stream player">
+    <meta name="author" content="URL Player Team">
     <meta name="robots" content="index, follow">
-    <meta property="og:title" content="About WebXPlayer - Free HTML5 Video Player">
-    <meta property="og:description" content="WebXPlayer is a powerful free HTML5 video player with URL streaming, subtitle support, and media library features.">
+    <link rel="canonical" href="https://yourdomain.com/about.html"> <!-- IMPORTANT: Replace with your actual URL -->
+
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://webxplayer.com/about">
-    <meta property="og:image" content="https://webxplayer.com/images/webxplayer-preview.jpg">
-    <title>About WebXPlayer - Free HTML5 Video Player</title>
+    <meta property="og:url" content="https://yourdomain.com/about.html"> <!-- IMPORTANT: Replace -->
+    <meta property="og:title" content="About URL Player - Your Free Online Video Streaming & Playback Solution">
+    <meta property="og:description" content="URL Player is your go-to free HTML5 video player for streaming from URLs, playing local files, and enjoying seamless video playback with subtitle support. Discover its powerful features!">
+    <meta property="og:image" content="https://yourdomain.com/images/url-player-preview.jpg"> <!-- IMPORTANT: Replace & ensure image exists -->
+    <meta property="og:site_name" content="URL Player">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://yourdomain.com/about.html"> <!-- IMPORTANT: Replace -->
+    <meta name="twitter:title" content="About URL Player - Stream & Play Videos Online Free">
+    <meta name="twitter:description" content="URL Player: Free HTML5 video player for URL streaming, local files, subtitles, and playlists. Powerful, private, and easy to use online.">
+    <meta name="twitter:image" content="https://yourdomain.com/images/url-player-preview.jpg"> <!-- IMPORTANT: Replace & ensure image exists -->
+    <!-- <meta name="twitter:site" content="@YourTwitterHandle"> --> <!-- Optional: Add your Twitter handle -->
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png"> <!-- Create a 180x180 png -->
+
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
+
     <!-- Preconnect to improve loading performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
     <style>
+        /* Your existing styles are good, keep them. Minor adjustments below if needed. */
+        :root {
+            /* Removing hardcoded colors - using CSS variables from styles.css instead */
+        }
+        body.light-theme {
+            /* Removing hardcoded colors - using CSS variables from styles.css instead */
+        }
         .about-container {
             flex-grow: 1;
             padding: 30px;
@@ -37,6 +63,18 @@
             margin-bottom: 30px;
             border-bottom: 1px solid var(--bg-tertiary);
             padding-bottom: 20px;
+            text-align: center;
+        }
+        .about-header h1 {
+            font-size: 2.5rem; /* Slightly larger for impact */
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        .about-header .subtitle { /* New class for subtitle */
+            font-size: 1.2rem;
+            color: var(--primary-light);
+            max-width: 700px;
+            margin: 0 auto;
         }
         .about-content {
             max-width: 900px;
@@ -46,61 +84,96 @@
             margin-bottom: 40px;
         }
         .about-section h2 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
+            font-size: 2rem; /* Consistent H2 size */
+            margin-bottom: 20px;
             color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
         }
         .about-section h3 {
-            font-size: 1.3rem;
+            font-size: 1.4rem; /* Consistent H3 size */
             margin: 25px 0 15px;
             color: var(--primary-light);
         }
-        .about-section p {
+        .about-section p, .about-section li {
+            font-size: 1rem; /* Ensure readable text size */
             margin-bottom: 15px;
-            line-height: 1.6;
+            line-height: 1.7; /* Increased for better readability */
         }
         .about-section ul {
             margin-left: 20px;
             margin-bottom: 20px;
+            list-style-type: disc; /* More standard bullet */
         }
-        .about-section li {
-            margin-bottom: 10px;
-            line-height: 1.5;
+        .about-section ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
         }
         .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Adjusted minmax */
+            gap: 25px; /* Slightly more gap */
             margin-top: 20px;
         }
         .feature-item {
             background-color: var(--bg-secondary);
             border-radius: 8px;
-            padding: 20px;
+            padding: 25px; /* More padding */
             box-shadow: var(--shadow);
+            transition: transform 0.2s ease-in-out;
+        }
+        .feature-item:hover {
+            transform: translateY(-5px);
         }
         .feature-item i {
             color: var(--primary-color);
-            font-size: 2rem;
+            font-size: 2.2rem; /* Slightly larger icon */
             margin-bottom: 15px;
+            display: block; /* Center icon if text below is short */
+            text-align: center;
         }
         .feature-item h4 {
-            font-size: 1.2rem;
+            font-size: 1.25rem; /* Slightly larger feature title */
             margin-bottom: 10px;
+            text-align: center;
         }
-        .back-button {
+        .feature-item p {
+            font-size: 0.95rem; /* Slightly smaller feature description for balance */
+            text-align: center;
+            line-height: 1.5;
+        }
+        .cta-section { /* For main Call To Action */
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--bg-tertiary);
+        }
+        .cta-button, .back-button { /* Shared styles for buttons */
             display: inline-block;
             background-color: var(--primary-color);
-            color: white;
-            padding: 10px 20px;
+            color: white !important; /* Ensure text is white */
+            padding: 12px 25px; /* Larger padding */
             border-radius: 6px;
-            margin-top: 20px;
+            margin-top: 10px; /* Adjusted margin */
             text-decoration: none;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+        }
+        .cta-button:hover, .back-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        .back-button {
+            background-color: var(--bg-tertiary); /* Differentiate back button */
+            margin-right: 15px; /* Space if next to another button */
         }
         .back-button:hover {
-            background-color: var(--primary-dark);
+             background-color: var(--bg-secondary);
         }
+
         @media (max-width: 768px) {
             .about-container {
                 padding: 20px 15px;
@@ -108,22 +181,81 @@
             .feature-grid {
                 grid-template-columns: 1fr;
             }
+            .about-header h1 {
+                font-size: 2rem;
+            }
+            .about-header .subtitle {
+                font-size: 1rem;
+            }
             .about-section h2 {
-                font-size: 1.5rem;
+                font-size: 1.6rem;
+            }
+            .about-section h3 {
+                font-size: 1.2rem;
             }
         }
     </style>
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "About URL Player - Stream & Play Videos Online Free",
+      "description": "Learn about URL Player, a free HTML5 video player for streaming videos from URLs, playing local media files, with subtitle support, playlists, and more. No installation required.",
+      "url": "https://yourdomain.com/about.html",
+      "keywords": "URL Player, online video player, stream video, HTML5 player, local video playback, subtitles, free player",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "URL Player",
+        "url": "https://yourdomain.com/"
+      },
+      "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "URL Player",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web (Cross-browser)",
+        "softwareVersion": "1.0", // Or your current version
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "aggregateRating": { // Optional: if you have ratings
+          "@type": "AggregateRating",
+          "ratingValue": "4.5", // Example
+          "reviewCount": "150"  // Example
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "URL Player Team"
+        }
+      },
+      "breadcrumb": { // Optional, but good for SEO
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://yourdomain.com/"
+        },{
+          "@type": "ListItem",
+          "position": 2,
+          "name": "About URL Player"
+        }]
+      }
+    }
+    </script>
 </head>
 <body>
     <div class="app-container">
-        <div class="sidebar">
+        <aside class="sidebar"> <!-- Changed div to aside for semantic HTML -->
             <div class="logo">
                 <i class="fas fa-play-circle"></i>
-                <h2>WebXPlayer</h2>
+                <h2>URL Player</h2>
             </div>
-            
-            <!-- Navigation Section -->
-            <div class="nav-container">
+
+            <nav class="nav-container"> <!-- Changed div to nav for semantic HTML -->
                 <h3>Navigation</h3>
                 <ul class="nav-list">
                     <li>
@@ -138,110 +270,132 @@
                             <span>About</span>
                         </a>
                     </li>
+                    <!-- Add other navigation links here: e.g., Features, Contact, FAQ -->
                 </ul>
-            </div>
-        </div>
-        
-        <div class="about-container">
+            </nav>
+        </aside>
+
+        <main class="about-container"> <!-- Changed div to main for semantic HTML -->
             <div class="about-content">
-                <div class="about-header">
-                    <h1>About WebXPlayer</h1>
-                    <p>A powerful free HTML5 video player for streaming media from URLs and playing local files.</p>
-                </div>
-                
-                <div class="about-section">
-                    <h2>What is WebXPlayer?</h2>
-                    <p>WebXPlayer is a versatile HTML5-based media player designed to provide a seamless viewing experience for both online streams and local media files. Our goal is to offer a comprehensive yet easy-to-use solution for all your video playback needs, directly in your web browser without requiring any downloads or installations.</p>
-                    
-                    <p>Whether you want to watch videos from online sources by simply pasting a URL, or play media files from your device with full subtitle support, WebXPlayer has you covered with its intuitive interface and powerful features.</p>
-                </div>
-                
-                <div class="about-section">
-                    <h2>Key Features</h2>
+                <header class="about-header"> <!-- Changed div to header for semantic HTML -->
+                    <h1>About URL Player</h1>
+                    <p class="subtitle">Your Go-To Free Online Player for Streaming URLs & Local Media Files with Ease.</p>
+                </header>
+
+                <section class="about-section">
+                    <h2>What is URL Player?</h2>
+                    <p>Tired of clunky desktop apps or online players that can't handle your favorite stream? URL Player is your modern, browser-based solution for seamless video playback. It's a versatile HTML5 media player designed to let you stream videos directly from web URLs or enjoy your local media collection, all without downloads or installations. Our mission is to provide a powerful, yet intuitive, ad-free video playing experience for everyone.</p>
+                    <p>Whether you're looking to watch an HLS live stream, play a video from a direct link, or view your downloaded movies with subtitles, URL Player is built to perform.</p>
+                </section>
+
+                <section class="about-section">
+                    <h2>Key Features of URL Player</h2>
                     <div class="feature-grid">
                         <div class="feature-item">
-                            <i class="fas fa-globe"></i>
-                            <h4>URL Streaming</h4>
-                            <p>Stream videos directly from URLs with support for various protocols including HTTP, HLS, and DASH.</p>
+                            <i class="fas fa-link"></i> <!-- Changed icon for URL streaming -->
+                            <h4>Direct URL Streaming</h4>
+                            <p>Paste any direct video URL (HTTP, HTTPS) or streaming manifest (HLS/m3u8, DASH/mpd) to start watching instantly.</p>
                         </div>
                         <div class="feature-item">
-                            <i class="fas fa-film"></i>
+                            <i class="fas fa-folder-open"></i> <!-- Changed icon for local media -->
                             <h4>Local Media Playback</h4>
-                            <p>Play video files from your device with support for all common formats (MP4, WebM, MKV, and more).</p>
+                            <p>Easily play video and audio files from your device. Supports MP4, WebM, MKV, MP3, and many more.</p>
                         </div>
                         <div class="feature-item">
                             <i class="fas fa-closed-captioning"></i>
-                            <h4>Subtitle Support</h4>
-                            <p>Display subtitles with customizable appearance, position, timing, and format support (SRT, VTT, SSA).</p>
+                            <h4>Full Subtitle Support</h4>
+                            <p>Load external subtitle files (SRT, VTT, SSA/ASS) and customize their appearance for the best viewing experience.</p>
                         </div>
                         <div class="feature-item">
-                            <i class="fas fa-list"></i>
+                            <i class="fas fa-list-ol"></i> <!-- Changed icon for playlist -->
                             <h4>Playlist Management</h4>
-                            <p>Create and manage playlists of both online streams and local media for continuous playback.</p>
+                            <p>Create and manage playlists of online streams and local files. Enjoy continuous playback effortlessly.</p>
                         </div>
                         <div class="feature-item">
                             <i class="fas fa-history"></i>
-                            <h4>URL History</h4>
-                            <p>Keep track of previously streamed URLs for quick access to your favorite content.</p>
+                            <h4>Playback History</h4>
+                            <p>Quickly access recently played URLs and local files, so you can pick up where you left off.</p>
                         </div>
                         <div class="feature-item">
                             <i class="fas fa-sliders-h"></i>
-                            <h4>Advanced Controls</h4>
-                            <p>Enjoy precise control with playback speed adjustment, volume control, and keyboard shortcuts.</p>
+                            <h4>Advanced Playback Controls</h4>
+                            <p>Fine-tune your viewing with playback speed adjustment, precise seeking, volume control, and keyboard shortcuts.</p>
+                        </div>
+                         <div class="feature-item">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h4>Responsive & PWA Ready</h4>
+                            <p>Enjoy a seamless experience on desktop, tablet, or mobile. Installable as a Progressive Web App (PWA).</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <h4>Privacy Focused</h4>
+                            <p>All processing is done in your browser. We don't track or store your media files or stream URLs.</p>
                         </div>
                     </div>
-                </div>
+                </section>
+
+                <section class="about-section">
+                    <h2>Why Choose URL Player?</h2>
+                    <h3><i class="fas fa-rocket"></i> Simplicity & Power Combined</h3>
+                    <p>URL Player offers a clean, intuitive interface packed with powerful features. It's designed to be easy for beginners yet robust enough for advanced users.</p>
+
+                    <h3><i class="fas fa-lock"></i> Privacy First</h3>
+                    <p>Your media, your privacy. All files and URLs are processed locally within your browser. We don't upload, store, or analyze any of your content.</p>
+
+                    <h3><i class="fas fa-gift"></i> Completely Free, No Strings Attached</h3>
+                    <p>Enjoy all features of URL Player without any cost, subscriptions, or annoying advertisements. Our goal is to provide a great tool for everyone.</p>
+
+                    <h3><i class="fas fa-globe"></i> Universal Access, No Installation</h3>
+                    <p>Access URL Player from any modern web browser on any device. No downloads, no installations – just open and play.</p>
+                </section>
                 
-                <div class="about-section">
-                    <h2>Why Choose WebXPlayer?</h2>
-                    <h3>Universal Compatibility</h3>
-                    <p>WebXPlayer works on any modern browser across various devices including desktops, laptops, tablets, and smartphones, providing a consistent experience regardless of your platform.</p>
-                    
-                    <h3>Privacy-Focused</h3>
-                    <p>Your media files and streams are processed locally in your browser. We don't collect or store any of your media data, ensuring complete privacy while you enjoy your content.</p>
-                    
-                    <h3>No Installation Required</h3>
-                    <p>As a web-based solution, WebXPlayer requires no downloads or installations. Simply visit our website and start playing your media instantly.</p>
-                    
-                    <h3>Completely Free</h3>
-                    <p>WebXPlayer is offered completely free of charge, with no advertisements or premium features locked behind paywalls.</p>
-                </div>
-                
-                <div class="about-section">
-                    <h2>Supported Formats</h2>
-                    <p>WebXPlayer supports a wide range of video and audio formats:</p>
+                <section class="about-section">
+                    <h2>Our Mission</h2>
+                    <p>At URL Player, our mission is to democratize video playback by providing a free, accessible, and powerful online tool. We believe everyone deserves a high-quality, private, and user-friendly media player without barriers. We are constantly working to improve URL Player and add features that our users love.</p>
+                </section>
+
+                <section class="about-section">
+                    <h2>Supported Formats & Protocols</h2>
+                    <p>URL Player aims for broad compatibility with common web video and audio standards:</p>
                     <ul>
-                        <li><strong>Video:</strong> MP4, WebM, MKV, AVI, MOV, FLV</li>
-                        <li><strong>Audio:</strong> MP3, WAV, OGG, FLAC</li>
-                        <li><strong>Streaming:</strong> HLS (.m3u8), DASH (.mpd), HTTP Progressive</li>
-                        <li><strong>Subtitles:</strong> SRT, WebVTT, SSA/ASS</li>
+                        <li><strong>Video Containers:</strong> MP4, WebM, MKV, Ogg Video, and others supported by your browser.</li>
+                        <li><strong>Audio Formats:</strong> MP3, AAC, WAV, FLAC, Ogg Audio.</li>
+                        <li><strong>Streaming Protocols:</strong> HTTP Live Streaming (HLS - .m3u8), Dynamic Adaptive Streaming over HTTP (DASH - .mpd), progressive download via HTTP/HTTPS.</li>
+                        <li><strong>Subtitle Formats:</strong> SubRip (.srt), WebVTT (.vtt), SubStation Alpha (.ssa/.ass).</li>
                     </ul>
-                    <p>Browser compatibility for specific formats may vary based on the built-in codecs of your browser.</p>
-                </div>
-                
-                <div class="about-section">
-                    <h2>How to Use</h2>
-                    <p>Using WebXPlayer is simple:</p>
+                    <p><em>Note: Actual format support can depend on the codecs built into your specific web browser.</em></p>
+                </section>
+
+                <section class="about-section">
+                    <h2>How to Use URL Player</h2>
+                    <p>Getting started with URL Player is incredibly simple:</p>
                     <ol>
-                        <li>To stream from a URL: Paste the video URL in the input field and click Play.</li>
-                        <li>To play local files: Click "Add Media" and select files from your device.</li>
-                        <li>To add subtitles: Click the subtitle button in the player controls and select a subtitle file.</li>
-                        <li>To manage playback: Use the intuitive controls or keyboard shortcuts.</li>
+                        <li><strong>For URL Streaming:</strong> Navigate to the player, paste your video URL (e.g., `https://example.com/video.mp4` or `https://example.com/stream.m3u8`) into the input field, and hit "Play".</li>
+                        <li><strong>For Local Files:</strong> Click the "Add Media" or "Open File" button, browse your device, and select the video or audio file you want to play.</li>
+                        <li><strong>To Add Subtitles:</strong> Once a video is playing, use the subtitle icon in the player controls to load a subtitle file from your device.</li>
+                        <li><strong>Control Your Playback:</strong> Use the on-screen controls for play/pause, volume, fullscreen, speed, etc., or learn the handy keyboard shortcuts for quicker access.</li>
                     </ol>
-                    <p>For the best experience, we recommend using modern browsers like Chrome, Firefox, Edge, or Safari.</p>
-                </div>
-                
-                <a href="index.html" class="back-button">
-                    <i class="fas fa-arrow-left"></i> Back to Player
-                </a>
+                    <p>For the optimal experience, we recommend using an up-to-date version of a modern browser like Chrome, Firefox, Edge, or Safari.</p>
+                </section>
+
+                <section class="cta-section">
+                    <h2>Ready to Experience Seamless Playback?</h2>
+                    <p>Give URL Player a try today and see how easy online video playback can be!</p>
+                    <a href="index.html" class="back-button">
+                        <i class="fas fa-arrow-left"></i> Back to Player
+                    </a>
+                    <a href="index.html" class="cta-button"> <!-- Main CTA -->
+                        <i class="fas fa-play"></i> Try URL Player Now!
+                    </a>
+                </section>
             </div>
-        </div>
+        </main>
     </div>
-    
+
     <script>
         // Handle theme consistency with the main player
         document.addEventListener('DOMContentLoaded', function() {
-            const storedTheme = localStorage.getItem('webXPlayerTheme');
+            const storedTheme = localStorage.getItem('urlPlayerTheme'); // Changed key
             if (storedTheme === 'light') {
                 document.body.classList.add('light-theme');
             }
