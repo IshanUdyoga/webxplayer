@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Learn about WebXPlayer - a free HTML5 video player that lets you stream videos from URLs or play local media files with subtitles support.">
+    <meta name="keywords" content="video player, HTML5, streaming, URL player, subtitle support, online video player, free player">
+    <meta name="author" content="WebXPlayer Team">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="About WebXPlayer - Free HTML5 Video Player">
+    <meta property="og:description" content="WebXPlayer is a powerful free HTML5 video player with URL streaming, subtitle support, and media library features.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://webxplayer.com/about">
+    <meta property="og:image" content="https://webxplayer.com/images/webxplayer-preview.jpg">
+    <title>About WebXPlayer - Free HTML5 Video Player</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Preconnect to improve loading performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <style>
+        .about-container {
+            flex-grow: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        .about-header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--bg-tertiary);
+            padding-bottom: 20px;
+        }
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .about-section {
+            margin-bottom: 40px;
+        }
+        .about-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        .about-section h3 {
+            font-size: 1.3rem;
+            margin: 25px 0 15px;
+            color: var(--primary-light);
+        }
+        .about-section p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .about-section ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        .about-section li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .feature-item {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        .feature-item i {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        .feature-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .back-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            margin-top: 20px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .back-button:hover {
+            background-color: var(--primary-dark);
+        }
+        @media (max-width: 768px) {
+            .about-container {
+                padding: 20px 15px;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fas fa-play-circle"></i>
+                <h2>WebXPlayer</h2>
+            </div>
+            
+            <!-- Navigation Section -->
+            <div class="nav-container">
+                <h3>Navigation</h3>
+                <ul class="nav-list">
+                    <li>
+                        <a href="index.html">
+                            <i class="fas fa-home"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="about.html">
+                            <i class="fas fa-info-circle"></i>
+                            <span>About</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="about-container">
+            <div class="about-content">
+                <div class="about-header">
+                    <h1>About WebXPlayer</h1>
+                    <p>A powerful free HTML5 video player for streaming media from URLs and playing local files.</p>
+                </div>
+                
+                <div class="about-section">
+                    <h2>What is WebXPlayer?</h2>
+                    <p>WebXPlayer is a versatile HTML5-based media player designed to provide a seamless viewing experience for both online streams and local media files. Our goal is to offer a comprehensive yet easy-to-use solution for all your video playback needs, directly in your web browser without requiring any downloads or installations.</p>
+                    
+                    <p>Whether you want to watch videos from online sources by simply pasting a URL, or play media files from your device with full subtitle support, WebXPlayer has you covered with its intuitive interface and powerful features.</p>
+                </div>
+                
+                <div class="about-section">
+                    <h2>Key Features</h2>
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-globe"></i>
+                            <h4>URL Streaming</h4>
+                            <p>Stream videos directly from URLs with support for various protocols including HTTP, HLS, and DASH.</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-film"></i>
+                            <h4>Local Media Playback</h4>
+                            <p>Play video files from your device with support for all common formats (MP4, WebM, MKV, and more).</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-closed-captioning"></i>
+                            <h4>Subtitle Support</h4>
+                            <p>Display subtitles with customizable appearance, position, timing, and format support (SRT, VTT, SSA).</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-list"></i>
+                            <h4>Playlist Management</h4>
+                            <p>Create and manage playlists of both online streams and local media for continuous playback.</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-history"></i>
+                            <h4>URL History</h4>
+                            <p>Keep track of previously streamed URLs for quick access to your favorite content.</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-sliders-h"></i>
+                            <h4>Advanced Controls</h4>
+                            <p>Enjoy precise control with playback speed adjustment, volume control, and keyboard shortcuts.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-section">
+                    <h2>Why Choose WebXPlayer?</h2>
+                    <h3>Universal Compatibility</h3>
+                    <p>WebXPlayer works on any modern browser across various devices including desktops, laptops, tablets, and smartphones, providing a consistent experience regardless of your platform.</p>
+                    
+                    <h3>Privacy-Focused</h3>
+                    <p>Your media files and streams are processed locally in your browser. We don't collect or store any of your media data, ensuring complete privacy while you enjoy your content.</p>
+                    
+                    <h3>No Installation Required</h3>
+                    <p>As a web-based solution, WebXPlayer requires no downloads or installations. Simply visit our website and start playing your media instantly.</p>
+                    
+                    <h3>Completely Free</h3>
+                    <p>WebXPlayer is offered completely free of charge, with no advertisements or premium features locked behind paywalls.</p>
+                </div>
+                
+                <div class="about-section">
+                    <h2>Supported Formats</h2>
+                    <p>WebXPlayer supports a wide range of video and audio formats:</p>
+                    <ul>
+                        <li><strong>Video:</strong> MP4, WebM, MKV, AVI, MOV, FLV</li>
+                        <li><strong>Audio:</strong> MP3, WAV, OGG, FLAC</li>
+                        <li><strong>Streaming:</strong> HLS (.m3u8), DASH (.mpd), HTTP Progressive</li>
+                        <li><strong>Subtitles:</strong> SRT, WebVTT, SSA/ASS</li>
+                    </ul>
+                    <p>Browser compatibility for specific formats may vary based on the built-in codecs of your browser.</p>
+                </div>
+                
+                <div class="about-section">
+                    <h2>How to Use</h2>
+                    <p>Using WebXPlayer is simple:</p>
+                    <ol>
+                        <li>To stream from a URL: Paste the video URL in the input field and click Play.</li>
+                        <li>To play local files: Click "Add Media" and select files from your device.</li>
+                        <li>To add subtitles: Click the subtitle button in the player controls and select a subtitle file.</li>
+                        <li>To manage playback: Use the intuitive controls or keyboard shortcuts.</li>
+                    </ol>
+                    <p>For the best experience, we recommend using modern browsers like Chrome, Firefox, Edge, or Safari.</p>
+                </div>
+                
+                <a href="index.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i> Back to Player
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Handle theme consistency with the main player
+        document.addEventListener('DOMContentLoaded', function() {
+            const storedTheme = localStorage.getItem('webXPlayerTheme');
+            if (storedTheme === 'light') {
+                document.body.classList.add('light-theme');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -940,6 +940,80 @@ input:checked + .slider:before {
     opacity: 1;
 }
 
+/* Navigation section in sidebar */
+.nav-container {
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--bg-tertiary);
+    margin-bottom: 20px;
+}
+
+.nav-container h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: var(--text-secondary);
+}
+
+.nav-list {
+    list-style: none;
+}
+
+.nav-list li {
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.nav-list li:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.nav-list li.active {
+    background-color: var(--primary-dark);
+}
+
+.nav-list li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.nav-list li i {
+    font-size: 1rem;
+    width: 20px;
+    text-align: center;
+}
+
+/* Responsive fixes for navigation */
+@media (max-width: 768px) {
+    .nav-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .nav-list li {
+        flex-grow: 1;
+        text-align: center;
+        padding: 12px 10px;
+    }
+    
+    .nav-list li a {
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .nav-list li i {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+    }
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     body {
