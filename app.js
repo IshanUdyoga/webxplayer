@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadSubtitleSettingsFromLocalStorage();
         initializeFloatingControls();
         applySubtitleSettings();
+        initializeSampleLinks(); // Add this new function call
     }
 
     // Setup event listeners

@@ -1426,3 +1426,124 @@ video:-ms-fullscreen {
         z-index: 2147483647;
     }
 }
+
+
+.player-description {
+    background-color: var(--bg-secondary);
+    color: var(--text-color);
+    padding: 40px 20px;
+    width: 100%;
+    border-top: 1px solid var(--bg-tertiary);
+}
+
+.description-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.player-description h2 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.player-description h3 {
+    color: var(--primary-light);
+    font-size: 1.5rem;
+    margin: 1.5rem 0 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.player-description p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+.feature-list, .benefits-list, .steps-list {
+    margin: 1rem 0 1.5rem;
+    padding-left: 1.5rem;
+}
+
+.feature-list li, .benefits-list li, .steps-list li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+.feature-list li i, .benefits-list li i {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+.benefits-list li strong {
+    color: var(--primary-light);
+}
+
+.steps-list {
+    list-style-type: decimal;
+    padding-left: 2rem;
+}
+
+.description-footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--bg-tertiary);
+}
+
+.disclaimer {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-bottom: 1.5rem;
+}
+
+.sample-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.sample-link {
+    display: block;
+    background-color: var(--bg-tertiary);
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.sample-link:hover {
+    background-color: var(--primary-dark);
+    color: white;
+}
+
+/* Responsive styles for player description */
+@media (max-width: 768px) {
+    .player-description {
+        padding: 30px 15px;
+    }
+    
+    .player-description h2 {
+        font-size: 1.6rem;
+    }
+    
+    .player-description h3 {
+        font-size: 1.3rem;
+    }
+    
+    .sample-links {
+        overflow-x: auto;
+    }
+    
+    .sample-link {
+        padding: 0.8rem 1rem; /* Larger touch target on mobile */
+    }
+}
